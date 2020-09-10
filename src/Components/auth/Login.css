@@ -1,0 +1,10 @@
+form {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    width: 50%;
+}
+.root {
+    display: flex;
+    justify-content: center;
+}
