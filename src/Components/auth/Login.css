@@ -1,10 +1,44 @@
-form {
+#login-form {
+    width: 30%;
     display: flex;
-    justify-content: center;
     flex-flow: column;
-    width: 50%;
+    align-items: center;
+    margin-top: 10%;
+    background-color: grey;
+    padding: 2em;
+    border-radius: 1em;
 }
-.root {
+#login-a {
+    text-decoration: underline;
+    justify-self: center;
+}
+#login-button {
+    width: 100%;
+}
+#loginDiv {
     display: flex;
     justify-content: center;
+}
+#login-form > *{
+    margin-top: 1em;
+}
+#LoginTitle {
+    margin-top: 0;
+    font-size: 500%;
+}
+#Cy {
+    color: blue;
+}
+#Buy {
+    color: orange;
+}
+#login-p {
+    color: red;
+    font-weight: bold;
+}
+.login-fieldset {
+    width: 100%;
+}
+.red {
+    background-color: red;
 }

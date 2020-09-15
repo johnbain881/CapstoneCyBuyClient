@@ -1,0 +1,33 @@
+.card {
+    min-width: 318px;
+    max-width: 318px;
+    margin: 30px 0 0 0
+}
+
+img.card-img-top {
+    height: 180px;
+    width: 318px;
+}
+
+#services-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#service-modal {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2em;
+    margin-top: 2em;
+}
+.photo-input-div {
+    display: flex;
+    justify-content: space-between;
+}
+.photo-input-div input, .photo-input-div select {
+    max-width: 70%;
+}
+.photo-input-div button, .photo-input-div button {
+    width: 28%;
+}

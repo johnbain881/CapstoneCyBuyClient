@@ -1,0 +1,27 @@
+#Carousel {
+    display: flex;
+    justify-content: center;
+    height: 360px;
+    object-fit: cover;
+
+}
+#Carousel > * {
+    position: relative;
+    width: 640px;
+    height: auto;
+    overflow: hidden;
+}
+#Title {
+    display: flex;
+    justify-content: center;
+}
+#Description {
+    display: flex;
+    justify-content: center;
+}
+#Description > * {
+    width: 35em;
+    text-align: center;
+}
+/* .carousel-item > img {
+} */

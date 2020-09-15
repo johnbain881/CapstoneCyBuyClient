@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Input, Label, Button } from 'reactstrap'
+import { Input, Button } from 'reactstrap'
 import './Login.css'
 
 const Login = props => {
     const username = useRef()
     const password = useRef()
     const [isLoading, setIsLoading] = useState(true)
+    const [userExists, setUserExists] = useState(true)
 
     const handleLogin = () => {
         setIsLoading(true)
@@ -22,13 +23,13 @@ const Login = props => {
         })
         .then(response => response.json())
         .then(response => {
-            console.log(response)
             if (response.valid) {
                 localStorage.setItem("Token", response.token)
+                props.history.push("/")
             } else {
-                alert("Incorrect username or password")
+                setUserExists(false)
+                setIsLoading(false)
             }
-            setIsLoading(false)
         })
     }
 
@@ -38,13 +39,16 @@ const Login = props => {
 
     return (
         <>
-            <form>
-                <Input innerRef={username} id="username" type="text"/>
-                <Label for="username">Username</Label>
-                <Input innerRef={password} id="password" type="password"/>
-                <Label for="password">Password</Label>
-                <Button disabled={isLoading} onClick={handleLogin}>Login</Button>
-            </form>
+            <div id="loginDiv">
+                <form id="login-form">
+                    <h1 id="LoginTitle"><span id="Cy">Cy</span><span id="Buy">Buy</span></h1>
+                    {!userExists ? <p>Incorrect username or password please try again</p> : null }
+                    <Input innerRef={username} id="username" type="text" placeholder="Username"/>
+                    <Input innerRef={password} id="password" type="password" placeholder="Password"/>
+                <Button id="login-button" disabled={isLoading} onClick={handleLogin}>Login</Button>
+                <a id="login-a" href="/register">Not a member? Sign up here!</a>
+                </form>
+            </div>
         </>
     )
 }
