@@ -39,7 +39,6 @@ const Services = (props) => {
             .then(response => response.json())
             .then(response => {
                 setServices(response)
-                console.log(response)
             })
     }
 
@@ -61,7 +60,7 @@ const Services = (props) => {
                 })
             })
             .then(response => response.json())
-            .then(response => {
+            .then(() => {
                 getServices()
             })
 
@@ -89,6 +88,11 @@ const Services = (props) => {
 
     return (
         <>
+        <div id="title-modal">
+            <div></div>
+            <div id="title">
+                <h1>Services</h1>
+            </div>
             <div id="service-modal">
                 <Form inline onSubmit={(e) => e.preventDefault()}>
                     <Button color="primary" onClick={toggle}>Add New Service</Button>
@@ -123,6 +127,7 @@ const Services = (props) => {
                     </ModalFooter>
                 </Modal>
             </div>
+        </div>
             <div id="services-cards">
                 {services.map(service => {
                     return (

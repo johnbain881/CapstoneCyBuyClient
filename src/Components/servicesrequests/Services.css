@@ -31,3 +31,11 @@ img.card-img-top {
 .photo-input-div button, .photo-input-div button {
     width: 28%;
 }
+#title-modal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#title {
+    margin-left: 10em;
+}

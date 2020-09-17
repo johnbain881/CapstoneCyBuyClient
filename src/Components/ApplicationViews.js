@@ -23,7 +23,7 @@ const ApplicationViews = props => {
             />
             <Route
                 exact path="/:serviceId(\d+)" render={props => {
-                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><ServiceDetails serviceId={parseInt(props.match.params.serviceId)} /></> : <Login {...props} />
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><ServiceDetails serviceId={parseInt(props.match.params.serviceId)} {...props} /></> : <Login {...props} />
                 }}
             />
             <Route
@@ -34,6 +34,11 @@ const ApplicationViews = props => {
             <Route
                 exact path="/requests" render={props => {
                     return isLoggedIn() ? <CyBuyNavBar {...props} /> : <Redirect to="/" />
+                }}
+            />
+            <Route
+                exact path="/requests/:serviceId(\d+)" render={props => {
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><ServiceDetails serviceId={parseInt(props.match.params.serviceId)} {...props} /></> : <Login {...props} />
                 }}
             />
         </>

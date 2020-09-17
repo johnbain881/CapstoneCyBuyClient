@@ -34,7 +34,7 @@ const Register = props => {
         setIsLoading(true)
         
         if (checkForm(updateHasValue()) && password1.current.value === password2.current.value){
-            fetch(`http://localhost:8000/user`, {
+            fetch(`http://localhost:8000/register/`, {
                 "method": "POST",
                 "headers": {
                     "Accept": "application/json",
@@ -49,7 +49,6 @@ const Register = props => {
                 })
             })
             .then(response => {
-                console.log(response)
                 if (response.status === 500) {
                     setUsernameIsTaken(true)
                 } else if (response.status === 200) {

@@ -14,6 +14,8 @@
 #Title {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 #Description {
     display: flex;
@@ -25,3 +27,18 @@
 }
 /* .carousel-item > img {
 } */
+
+.photo-input-div {
+    display: flex;
+    justify-content: space-between;
+}
+.photo-input-div input, .photo-input-div select {
+    max-width: 70%;
+}
+.photo-input-div button, .photo-input-div button {
+    width: 28%;
+}
+
+#delete {
+    margin-left: .5em;
+}
