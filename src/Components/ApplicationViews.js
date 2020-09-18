@@ -5,6 +5,9 @@ import Register from './auth/Register';
 import CyBuyNavBar from './navbar/NavBar';
 import Services from './servicesrequests/Services';
 import ServiceDetails from './servicesrequests/ServiceDetails';
+import Requests from './servicesrequests/Requests';
+import RequestDetails from './servicesrequests/RequestDetails'
+import Messages from './messages/Messages';
 
 
 const ApplicationViews = props => {
@@ -33,12 +36,17 @@ const ApplicationViews = props => {
             />
             <Route
                 exact path="/requests" render={props => {
-                    return isLoggedIn() ? <CyBuyNavBar {...props} /> : <Redirect to="/" />
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><Requests /></> : <Login {...props} />
                 }}
             />
             <Route
-                exact path="/requests/:serviceId(\d+)" render={props => {
-                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><ServiceDetails serviceId={parseInt(props.match.params.serviceId)} {...props} /></> : <Login {...props} />
+                exact path="/requests/:requestId(\d+)" render={props => {
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><RequestDetails requestId={parseInt(props.match.params.requestId)} {...props} /></> : <Login {...props} />
+                }}
+            />
+            <Route
+                exact path="/messages" render={props => {
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><Messages /></> : <Login {...props} />
                 }}
             />
         </>
