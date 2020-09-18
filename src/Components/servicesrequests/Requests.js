@@ -8,7 +8,7 @@ import {
   } from 'reactstrap';
 import './Services.css'
 
-const Services = (props) => {
+const Requests = (props) => {
     
     const [modal, setModal] = useState(false);
 
@@ -20,15 +20,15 @@ const Services = (props) => {
     const [images, setImages] = useState([])
     const photoToRemove = useRef()
 
-    const [services, setServices] = useState([])
+    const [requests, setRequests] = useState([])
 
     useEffect(() => {
-        getServices()
+        getRequests()
     }, [])
 
 
-    const getServices = () => {
-        fetch(`http://localhost:8000/service`, {
+    const getRequests = () => {
+        fetch(`http://localhost:8000/request`, {
                 "method": "GET",
                 "headers": {
                     "Accept": "application/json",
@@ -38,14 +38,14 @@ const Services = (props) => {
             })
             .then(response => response.json())
             .then(response => {
-                setServices(response)
+                setRequests(response)
             })
     }
 
-    const addService = () => {
+    const addRequest = () => {
         addAnotherPhoto()
         if (body.current.value !== "" && title.current.value !== "" && images.length !== 0)
-        fetch(`http://localhost:8000/service`, {
+        fetch(`http://localhost:8000/request`, {
                 "method": "POST",
                 "headers": {
                     "Accept": "application/json",
@@ -60,7 +60,7 @@ const Services = (props) => {
             })
             .then(response => response.json())
             .then(() => {
-                getServices()
+                getRequests()
             })
 
         setImages([])
@@ -90,14 +90,14 @@ const Services = (props) => {
         <div id="title-modal">
             <div></div>
             <div id="title">
-                <h1>Services</h1>
+                <h1>Requests</h1>
             </div>
             <div id="service-modal">
                 <Form inline onSubmit={(e) => e.preventDefault()}>
-                    <Button color="primary" onClick={toggle}>Add New Service</Button>
+                    <Button color="primary" onClick={toggle}>Add New Request</Button>
                 </Form>
                 <Modal isOpen={modal} toggle={toggle} unmountOnClose={true}>
-                    <ModalHeader toggle={toggle}>Add a new service</ModalHeader>
+                    <ModalHeader toggle={toggle}>Add a new request</ModalHeader>
                     <ModalBody>
                         <div className="photo-input-div">
                             <Input onChange={getImage} type="text" placeholder="Photo URL" value={currentImage} />
@@ -120,22 +120,22 @@ const Services = (props) => {
                     <ModalFooter>
                         <Button color="primary" onClick={() => {
                             toggle() 
-                            addService()
-                            }}>Add Service</Button>{' '}
+                            addRequest()
+                            }}>Add Request</Button>{' '}
                         <Button color="secondary" onClick={toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         </div>
             <div id="services-cards">
-                {services.map(service => {
+                {requests.map(request => {
                     return (
-                    <Card key={service.id}>
-                        <CardImg top width="100%" src={`${service.photos[0].photo_url}`} alt="Card image cap" />
+                    <Card key={request.id}>
+                        <CardImg top width="100%" src={`${request.photos[0].photo_url}`} alt="Card image cap" />
                         <CardBody>
-                            <CardTitle>{service.title}</CardTitle>
-                            <CardSubtitle>By {service.user.username}</CardSubtitle>
-                            <a href={`/${service.id}`} ><Button color="link">Details</Button></a>
+                            <CardTitle>{request.title}</CardTitle>
+                            <CardSubtitle>By {request.user.username}</CardSubtitle>
+                            <a href={`/requests/${request.id}`} ><Button color="link">Details</Button></a>
                         </CardBody>
                     </Card>
                     )
@@ -146,4 +146,4 @@ const Services = (props) => {
 }
 
 
-export default Services
+export default Requests

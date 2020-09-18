@@ -42,3 +42,12 @@
 #delete {
     margin-left: .5em;
 }
+#Message-Provider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#Message {
+    width: 30%;
+    margin-bottom: 1em;
+}

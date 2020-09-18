@@ -4,9 +4,9 @@ import { UncontrolledCarousel, Button, FormGroup,
     ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './ServiceDetails.css'
 
-const ServiceDetails = props => {
+const RequestDetails = props => {
 
-    const [service, setService] = useState({photos: [], title: "", body: "", user: {}})
+    const [request, setRequest] = useState({photos: [], title: "", body: "", user: {}})
     const [items, setItems] = useState([])
     const [modal, setModal] = useState(false);
     const [isCurrentUser, setIsCurrentUser] = useState(false)
@@ -14,7 +14,6 @@ const ServiceDetails = props => {
     const selectedPhoto = useRef()
     const title = useRef()
     const body = useRef()
-    const messageToSend = useRef()
 
     const toggle = () => {
         if (modal) {
@@ -23,8 +22,8 @@ const ServiceDetails = props => {
         setModal(!modal)
     };
 
-    const deleteService = () => {
-        fetch(`http://localhost:8000/service/${props.serviceId}`, {
+    const deleteRequest = () => {
+        fetch(`http://localhost:8000/request/${props.requestId}`, {
                 "method": "DELETE",
                 "headers": {
                     "Accept": "application/json",
@@ -32,7 +31,7 @@ const ServiceDetails = props => {
                     "Authorization": `Token ${localStorage.getItem("Token")}`
                 }
             })
-            .then(() => props.history.push("/"))
+            .then(() => props.history.push("/requests"))
     }
     
     const removePhoto = () => {
@@ -43,12 +42,12 @@ const ServiceDetails = props => {
         setItems(newItems)
     }
 
-    const editService = () => {
+    const editRequest = () => {
         let images = items.map(item => item.src)
         if (currentImage !== "") {
             images.push(currentImage)
         }
-        fetch(`http://localhost:8000/service/${props.serviceId}`, {
+        fetch(`http://localhost:8000/request/${props.requestId}`, {
                 "method": "PUT",
                 "headers": {
                     "Accept": "application/json",
@@ -63,7 +62,7 @@ const ServiceDetails = props => {
             })
             .then(response => response.json())
             .then(response => {
-                getService()
+                getRequest()
             })
     }
 
@@ -86,29 +85,8 @@ const ServiceDetails = props => {
         }
     }
 
-    const sendMessage = () => {
-        let userId = parseInt(service.user.url.split("http://localhost:8000/user/")[1])
-        if (messageToSend.current.value !== "") {
-            fetch(`http://localhost:8000/conversation`, {
-                "method": "POST",
-                "headers": {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${localStorage.getItem("Token")}`
-                },
-                "body": JSON.stringify({
-                    userId: userId,
-                    message: messageToSend.current.value
-                })
-            })
-            .then(() => {
-                messageToSend.current.value = ""
-            })
-        }
-    }
-
-    const getService = () => {
-        fetch(`http://localhost:8000/service/${props.serviceId}`, {
+    const getRequest = () => {
+        fetch(`http://localhost:8000/request/${props.requestId}`, {
                 "method": "GET",
                 "headers": {
                     "Accept": "application/json",
@@ -118,7 +96,7 @@ const ServiceDetails = props => {
             })
             .then(response => response.json())
             .then(response => {
-                setService(response)
+                setRequest(response)
                 fetch(`http://localhost:8000/user`, {
                         "method": "GET",
                         "headers": {
@@ -143,7 +121,7 @@ const ServiceDetails = props => {
             })
     }
 
-    useEffect(getService, [])
+    useEffect(getRequest, [])
 
 
     return (
@@ -151,11 +129,11 @@ const ServiceDetails = props => {
             {isCurrentUser ? 
                 <div id="service-modal">
                     <Form inline onSubmit={(e) => e.preventDefault()}>
-                        <Button color="primary" onClick={toggle}>Edit Service</Button>
-                        <Button id="delete" color="danger" onClick={deleteService}>Delete Service</Button>
+                        <Button color="primary" onClick={toggle}>Edit Request</Button>
+                        <Button id="delete" color="danger" onClick={deleteRequest}>Delete Request</Button>
                     </Form>
                     <Modal isOpen={modal} toggle={toggle} unmountOnClose={true}>
-                        <ModalHeader toggle={toggle}>Add a new service</ModalHeader>
+                        <ModalHeader toggle={toggle}>Add a new request</ModalHeader>
                         <ModalBody>
                             <div className="photo-input-div">
                                 <Input onChange={getImage} type="text" placeholder="Photo URL" defaultValue={currentImage} />
@@ -171,41 +149,35 @@ const ServiceDetails = props => {
                                 </div>
                             </FormGroup>
                             <p></p>
-                            <Input innerRef={title} type="textarea" placeholder="Title" rows={1} defaultValue={service.title} />
+                            <Input innerRef={title} type="textarea" placeholder="Title" rows={1} defaultValue={request.title} />
                             <p></p>
-                            <Input innerRef={body} type="textarea" placeholder="Description" rows={5} defaultValue={service.body} />
+                            <Input innerRef={body} type="textarea" placeholder="Description" rows={5} defaultValue={request.body} />
                         </ModalBody>
                         <ModalFooter>
                             <Button color="primary" onClick={() => {
                                 toggle()
-                                editService()
-                                }}>Edit Service</Button>{' '}
+                                editRequest()
+                                }}>Edit Request</Button>{' '}
                             <Button color="secondary" onClick={toggle}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
                 </div>
             : null}
             <div id="Title">
-                <h1>{service.title}</h1>
-                <h3>By {service.user.username}</h3>
+                <h1>{request.title}</h1>
+                <h3>By {request.user.username}</h3>
             </div>
             <div id="Carousel">
                 <UncontrolledCarousel  items={items} />
             </div>
             <div id="Description">
                 <p>
-                    {service.body}
+                    {request.body}
                 </p>
             </div>
-            {isCurrentUser ? null : 
-                <div id="Message-Provider">
-                    <Input innerRef={messageToSend} id="Message" type="textarea"></Input>
-                    <Button onClick={sendMessage}>Send Message</Button>
-                </div>
-            }
         </div>
     )
 }
 
 
-export default ServiceDetails
+export default RequestDetails
