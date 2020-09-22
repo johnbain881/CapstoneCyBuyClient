@@ -39,7 +39,6 @@ const Requests = (props) => {
             })
             .then(response => response.json())
             .then(response => {
-                console.log(response)
                 setRequests(response)
             })
     }

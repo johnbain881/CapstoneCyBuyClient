@@ -25,7 +25,6 @@ const PastRequests = props => {
             })
             .then(response => response.json())
             .then(response => {
-                console.log(response)
                 setRequests(response)
                 fetch(`http://localhost:8000/user`, {
                         "method": "GET",
