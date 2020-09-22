@@ -14,6 +14,7 @@ const RequestDetails = props => {
     const selectedPhoto = useRef()
     const title = useRef()
     const body = useRef()
+    const messageToSend = useRef()
 
     const toggle = () => {
         if (modal) {
@@ -42,6 +43,25 @@ const RequestDetails = props => {
         setItems(newItems)
     }
 
+    const completeRequest = () => {
+        fetch(`http://localhost:8000/request/${props.requestId}`, {
+                "method": "PUT",
+                "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${localStorage.getItem("Token")}`
+                },
+                "body": JSON.stringify({
+                    body: request.body,
+                    title: request.title,
+                    is_completed: !request.is_completed,
+                    photos: request.photos.map(photo => photo.photo_url)
+                })
+            })
+            .then(response => response.json())
+            .then(getRequest)
+    }
+
     const editRequest = () => {
         let images = items.map(item => item.src)
         if (currentImage !== "") {
@@ -57,13 +77,12 @@ const RequestDetails = props => {
                 "body": JSON.stringify({
                     body: body.current.value,
                     title: title.current.value,
+                    is_completed: request.is_completed,
                     photos: images
                 })
             })
             .then(response => response.json())
-            .then(response => {
-                getRequest()
-            })
+            .then(getRequest)
     }
 
     const getImage = (e) => {
@@ -82,6 +101,28 @@ const RequestDetails = props => {
               })
             setItems(newImages)
             setCurrentImage("")
+        }
+    }
+
+    const sendMessage = () => {
+        let userId = parseInt(request.user.url.split("http://localhost:8000/user/")[1])
+        let regex = new RegExp('\\S', 'gm')
+        if (regex.test(messageToSend.current.value)) {
+            fetch(`http://localhost:8000/conversation`, {
+                "method": "POST",
+                "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${localStorage.getItem("Token")}`
+                },
+                "body": JSON.stringify({
+                    userId: userId,
+                    message: messageToSend.current.value
+                })
+            })
+            .then(() => {
+                messageToSend.current.value = ""
+            })
         }
     }
 
@@ -129,7 +170,8 @@ const RequestDetails = props => {
             {isCurrentUser ? 
                 <div id="service-modal">
                     <Form inline onSubmit={(e) => e.preventDefault()}>
-                        <Button color="primary" onClick={toggle}>Edit Request</Button>
+                        <Button id="complete" color="primary" onClick={completeRequest}>{request.is_completed ? "Reopen Request" : "Complete Request"}</Button>
+                        <Button color="secondary" onClick={toggle}>Edit Request</Button>
                         <Button id="delete" color="danger" onClick={deleteRequest}>Delete Request</Button>
                     </Form>
                     <Modal isOpen={modal} toggle={toggle} unmountOnClose={true}>
@@ -175,6 +217,12 @@ const RequestDetails = props => {
                     {request.body}
                 </p>
             </div>
+            {isCurrentUser ? null : 
+                <div id="Message-Provider">
+                    <Input innerRef={messageToSend} id="Message" type="textarea"></Input>
+                    <Button onClick={sendMessage}>Send Message</Button>
+                </div>
+            }
         </div>
     )
 }

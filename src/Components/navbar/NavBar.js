@@ -33,6 +33,9 @@ const CyBuyNavBar = (props) => {
               <NavLink href="/requests">Requests</NavLink>
             </NavItem>
             <NavItem>
+              <NavLink href="/requests/past">Completed Requests</NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink href="/messages">Messages</NavLink>
             </NavItem>
             <NavItem>

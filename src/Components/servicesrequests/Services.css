@@ -36,6 +36,10 @@ img.card-img-top {
     flex-direction: row;
     justify-content: space-between;
 }
+#search {
+    margin-top: 1em;
+    margin-left: 1em;
+}
 #title {
-    margin-left: 10em;
+    margin-right: 2em;
 }

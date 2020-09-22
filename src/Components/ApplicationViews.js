@@ -8,6 +8,7 @@ import ServiceDetails from './servicesrequests/ServiceDetails';
 import Requests from './servicesrequests/Requests';
 import RequestDetails from './servicesrequests/RequestDetails'
 import Messages from './messages/Messages';
+import PastRequests from './servicesrequests/PastRequests';
 
 
 const ApplicationViews = props => {
@@ -42,6 +43,11 @@ const ApplicationViews = props => {
             <Route
                 exact path="/requests/:requestId(\d+)" render={props => {
                     return isLoggedIn() ? <><CyBuyNavBar {...props} /><RequestDetails requestId={parseInt(props.match.params.requestId)} {...props} /></> : <Login {...props} />
+                }}
+            />
+            <Route
+                exact path="/requests/past" render={props => {
+                    return isLoggedIn() ? <><CyBuyNavBar {...props} /><PastRequests /></> : <Login {...props} />
                 }}
             />
             <Route
