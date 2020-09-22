@@ -14,6 +14,7 @@ const Requests = (props) => {
 
     const toggle = () => setModal(!modal);
 
+    const [search, setSearch] = useState("")
     const body = useRef()
     const title = useRef()
     const [currentImage, setCurrentImage] = useState("")
@@ -24,11 +25,11 @@ const Requests = (props) => {
 
     useEffect(() => {
         getRequests()
-    }, [])
+    }, [search])
 
 
     const getRequests = () => {
-        fetch(`http://localhost:8000/request`, {
+        fetch(`http://localhost:8000/request?search=${search}`, {
                 "method": "GET",
                 "headers": {
                     "Accept": "application/json",
@@ -38,6 +39,7 @@ const Requests = (props) => {
             })
             .then(response => response.json())
             .then(response => {
+                console.log(response)
                 setRequests(response)
             })
     }
@@ -88,7 +90,9 @@ const Requests = (props) => {
     return (
         <>
         <div id="title-modal">
-            <div></div>
+            <div id="search">
+                <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search"></Input>
+            </div>
             <div id="title">
                 <h1>Requests</h1>
             </div>
@@ -129,7 +133,7 @@ const Requests = (props) => {
         </div>
             <div id="services-cards">
                 {requests.map(request => {
-                    return (
+                    return (request.is_completed ? null :
                     <Card key={request.id}>
                         <CardImg top width="100%" src={`${request.photos[0].photo_url}`} alt="Card image cap" />
                         <CardBody>

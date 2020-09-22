@@ -40,7 +40,8 @@ const Messages = props => {
 
     const sendMessage = () => {
         let userId = getCurrentConversationUserId()
-        if (messageToSend.current.value !== "" && currentConversation !== 0) {
+        let regex = new RegExp('\\S', 'gm')
+        if (regex.test(messageToSend.current.value) && currentConversation !== 0) {
             fetch(`http://localhost:8000/conversation`, {
                 "method": "POST",
                 "headers": {
@@ -62,7 +63,7 @@ const Messages = props => {
 
     const getCurrentConversationUserId = () => {
         let userId = null
-        conversations.filter(conversation => {
+        conversations.forEach(conversation => {
             if (conversation.id === currentConversation) {
                 userId = parseInt(conversation.user.url.split("http://localhost:8000/user/")[1]) === currentUser.id ? parseInt(conversation.other_user.url.split("http://localhost:8000/user/")[1]) : parseInt(conversation.user.url.split("http://localhost:8000/user/")[1])
             }
@@ -84,6 +85,10 @@ const Messages = props => {
 
     useEffect(() => {
         getConversations()
+        const interval = setInterval(() => {
+            getConversations()
+          }, 60000);
+          return () => clearInterval(interval);
     }, [])
 
     useEffect(() => {
@@ -104,7 +109,7 @@ const Messages = props => {
                 })
             }
         })
-    }, [currentConversation])
+    }, [currentConversation, conversations, currentUser.id])
 
     return (
         <div id="Messages-Page">
@@ -118,9 +123,10 @@ const Messages = props => {
                 </div>
                 <div id="Messages">
                     {conversations.map(conversation => conversation.id === currentConversation ? conversation.messages.map(message => <Alert key={message.id} color={parseInt(message.user.split("http://localhost:8000/user/")[1]) === currentUser.id ? "primary" : "secondary"} className={parseInt(message.user.split("http://localhost:8000/user/")[1]) === currentUser.id ? "right message" : "left message"}>{message.message}</Alert>): null)}
+                    <div id="Anchor"></div>
                 </div>
                 <div id="Message-Form">
-                    <Input onKeyPress={sendIfEnter} innerRef={messageToSend} type="textarea"></Input>
+                    <Input onKeyPress={sendIfEnter} maxLength={1000} innerRef={messageToSend} type="textarea"></Input>
                     <Button id="Send-Message-Button" color="primary" onClick={sendMessage}>Send Message</Button>
                 </div>
             </>

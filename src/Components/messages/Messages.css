@@ -22,6 +22,11 @@
     flex-direction: column;
     overflow-y: scroll;
     padding-top: 1em;
+    overflow-anchor: none;
+}
+#Anchor {
+    overflow-anchor: auto;
+    height: 1px;
 }
 .right {
     align-self: flex-end;
@@ -33,6 +38,7 @@
 }
 .message {
     max-width: 60%;
+    word-wrap: break-word;
 }
 #Message-Form {
     display: flex;

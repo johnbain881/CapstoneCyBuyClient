@@ -88,7 +88,8 @@ const ServiceDetails = props => {
 
     const sendMessage = () => {
         let userId = parseInt(service.user.url.split("http://localhost:8000/user/")[1])
-        if (messageToSend.current.value !== "") {
+        let regex = new RegExp('\\S', 'gm')
+        if (regex.test(messageToSend.current.value)) {
             fetch(`http://localhost:8000/conversation`, {
                 "method": "POST",
                 "headers": {

@@ -14,6 +14,7 @@ const Services = (props) => {
 
     const toggle = () => setModal(!modal);
 
+    const [search, setSearch] = useState("")
     const body = useRef()
     const title = useRef()
     const [currentImage, setCurrentImage] = useState("")
@@ -24,11 +25,11 @@ const Services = (props) => {
 
     useEffect(() => {
         getServices()
-    }, [])
+    }, [search])
 
 
     const getServices = () => {
-        fetch(`http://localhost:8000/service`, {
+        fetch(`http://localhost:8000/service?search=${search}`, {
                 "method": "GET",
                 "headers": {
                     "Accept": "application/json",
@@ -88,7 +89,9 @@ const Services = (props) => {
     return (
         <>
         <div id="title-modal">
-            <div></div>
+            <div id="search">
+                <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search"></Input>
+            </div>
             <div id="title">
                 <h1>Services</h1>
             </div>
